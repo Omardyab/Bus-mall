@@ -1,0 +1,14 @@
+img{
+    width: 30%;
+    display: inline-block;
+
+}
+* {
+    box-sizing: border-box;
+}
+
+header{
+    background-color: aqua;
+    text-align: center;
+    font-size:x-large;
+}
