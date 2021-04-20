@@ -1,17 +1,19 @@
 'use strict';
-
 //global access to my elements
 let firstImageElement = document.getElementById('first-image');
 let secondImageElement = document.getElementById('second-image');
 let thirdImageElement = document.getElementById('third-image');
-let buttonreport=document.getElementById('buttonrepor');
+let container = document.getElementById('first-sec');
 //initiliazation my variables
 let counts = 0;
-let Attempts = 25;
+let Attempts = 3;
 let firstIndex;
 let secondIndex;
 let thirdIndex;
-
+let arrOfnames = [];
+let arrOfVotes = [];
+let arrOfShown = [];
+// let arraOfPrevvalue=[];
 //creating a const function
 function BusCatalog(name, imgsrc) {
   this.name = name;
@@ -19,6 +21,7 @@ function BusCatalog(name, imgsrc) {
   this.votes = 0;
   this.shown =0;
   BusCatalog.Images.push(this);
+  arrOfnames.push(this.name);
 }
 
 BusCatalog.Images = [];
@@ -45,95 +48,108 @@ new BusCatalog('Water-can', 'assets/water-can.jpg');
 new BusCatalog('Wine-glass', 'assets/wine-glass.jpg');
 
 //random function
-console.log(BusCatalog.Images);
 function genrateindex() {
   return Math.floor(Math.random() * BusCatalog.Images.length);
 }
 //display images function
-function renderimages() {
+function renderimages()
+{
   firstIndex = genrateindex();
   secondIndex = genrateindex();
   thirdIndex = genrateindex();
-  while (firstIndex === secondIndex || thirdIndex === secondIndex || thirdIndex === firstIndex) {
+  while (firstIndex === secondIndex || thirdIndex === secondIndex || thirdIndex === firstIndex )
+  {
     firstIndex = genrateindex();
     secondIndex = genrateindex();
   }
-
-  console.log(firstIndex);
-  console.log(secondIndex);
-  console.log(thirdIndex);
-
-  // eslint-disable-next-line indent
+  console.log(BusCatalog.Images[firstIndex]);
   firstImageElement.src = BusCatalog.Images[firstIndex].imgsrc;
+  BusCatalog.Images[firstIndex].shown++;
   secondImageElement.src = BusCatalog.Images[secondIndex].imgsrc;
+  BusCatalog.Images[secondIndex].shown++;
   thirdImageElement.src = BusCatalog.Images[thirdIndex].imgsrc;
+  BusCatalog.Images[thirdIndex].shown++;
 }
 renderimages();
 
 //click event
-firstImageElement.addEventListener('click', handleClicking);
-secondImageElement.addEventListener('click', handleClicking);
-thirdImageElement.addEventListener('click', handleClicking);
-buttonreport.addEventListener('click', generatelist);
-// button.addEventListener('click',handlebutton);
+container.addEventListener('click',handleClicking);
+
 //handling event function
-function handleClicking(event) {
+function handleClicking(event)
+{
   counts++;
-  if (counts <= Attempts) {
-    if (event.target.id === 'first-image') {
+  if (counts <= Attempts)
+  {
+    if (event.target.id === 'first-image')
+    {
       BusCatalog.Images[firstIndex].votes++;
-      BusCatalog.Images[secondIndex].shown++;
-      BusCatalog.Images[thirdIndex].shown++;
     }
-    else if (event.target.id === 'second-image') {
+    else if (event.target.id === 'second-image')
+    {
       BusCatalog.Images[secondIndex].votes++;
-      BusCatalog.Images[firstIndex].shown++;
-      BusCatalog.Images[thirdIndex].shown++;
     }
-    else if (event.target.id === 'third-image') {
+    else if (event.target.id === 'third-image')
+    {
       BusCatalog.Images[thirdIndex].votes++;
-      BusCatalog.Images[firstIndex].shown++;
-      BusCatalog.Images[firstIndex].shown++;
+    }
+    else
+    {
+      alert('Please click on one of the images shown below');
+      counts--;
     }
     renderimages();
+  }else{
+    let buttonreport=document.getElementById('buttonrepor');
+    buttonreport.addEventListener('click', generatelist);
+    container.removeEventListener('click',handleClicking);
   }
-  else {
-    // console.log('working fine');
-    firstImageElement = removeEventListener('click', handleClicking);
-    secondImageElement = removeEventListener('click', handleClicking);
-    thirdImageElement = removeEventListener('click', handleClicking);
-  }
-  // console.log(BusCatalog);
-  // console.log(this.votes);
-  // console.log(BusCatalog.Images);
 }
 
-// function handlebutton(event)
-// {
-//   if (event.target.id === 'button')
-//   {
-//     generatelist();
-
-//   }
-// }
 function generatelist() {
+
   let Rresults = document.getElementById('Rresults');
   Rresults.innerHTML = '';
-  for (let i = 0; i < BusCatalog.Images.length; i++) {
+  for (let i = 0; i <BusCatalog.Images.length; i++)
+  {
+    arrOfVotes.push(BusCatalog.Images[i].votes);
+    console.log('this is votes',BusCatalog.Images[i].votes);
+    arrOfShown.push(BusCatalog.Images[i].shown);
+    console.log(BusCatalog.Images[i].votes);
+    console.log(arrOfVotes);
     let li = document.createElement('li');
     Rresults.appendChild(li);
     let Per=(100)*(BusCatalog.Images[i].votes)/(counts-1);
-    li.textContent = ` ${BusCatalog.Images[i].name} has ${BusCatalog.Images[i].votes} votes and has a percentage of being clicked when shown of ${Per} %`;
-    if(Per >=70)
-    {
-      li.textContent=`WOW the visitor gave ${BusCatalog.Images[i].name} a very high rating and its ${Per}% :)`;
-    }
-    if(Per <=0)
-    {
-      li.textContent=`Oops !!, the visitor did not choose at all ${BusCatalog.Images[i].name} and it has a very bad rating of ${Per}%`;
-    }
+    li.textContent = ` ${BusCatalog.Images[i].name} has ${BusCatalog.Images[i].votes} votes and has a percentage of being clicked when shown of ${Per} %, and it has been shown ${BusCatalog.Images[i].shown} times`;
+
   }
-
+  chart();
 }
-
+function chart()
+{
+  let ctx = document.getElementById('myChart');
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-undef
+  let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: arrOfnames,
+      datasets: [{
+        label: 'Votes',
+        data: arrOfVotes,
+        backgroundColor: [
+          'rgba(150, 9, 100, 0.2)',
+        ],
+        borderWidth: 1
+      },{
+        label:'# of Shown',
+        data: arrOfShown,
+        backgroundColor:[
+          'rgb(100,150,250)'
+        ],
+        borderWidth: 1
+      }]
+    }
+  });
+}
 
