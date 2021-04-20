@@ -3,6 +3,7 @@
 Credits Omar dyab
 Big thanks to :
 Sally, Hanaa, and Yazan for their help im improving my code and get it done :).
+for the  second part I would liek to thank Israa as well for her help :). 
 
 To be checked: button :) 
 
@@ -44,5 +45,7 @@ we use this if we have a prototype.
 Remaining questions:
 -why we did not have this.source? 
 its not a prototype
+-Clicking outside an image would create a problem with the number of shown images and would affect the analysis
+-Shown images have one more extar value as its counting the last image which should not be included  in the analysis 
 
  

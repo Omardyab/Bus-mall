@@ -56,7 +56,7 @@ function genrateindex() {
 function renderimages()
 {
   arraOfPrevvalue=[firstIndex,secondIndex,thirdIndex];
-//   console.log('prev values',arraOfPrevvalue);
+  //   console.log('prev values',arraOfPrevvalue);
   firstIndex = genrateindex();
   secondIndex = genrateindex();
   thirdIndex = genrateindex();
@@ -78,7 +78,7 @@ function renderimages()
   }
   arrofNewvalues=[firstIndex,secondIndex,thirdIndex];
   console.log('after while new values',arrofNewvalues);
-//   console.log(BusCatalog.Images[firstIndex]);
+  //   console.log(BusCatalog.Images[firstIndex]);
   firstImageElement.src = BusCatalog.Images[firstIndex].imgsrc;
   BusCatalog.Images[firstIndex].shown++;
   secondImageElement.src = BusCatalog.Images[secondIndex].imgsrc;
