@@ -6,14 +6,15 @@ let thirdImageElement = document.getElementById('third-image');
 let container = document.getElementById('first-sec');
 //initiliazation my variables
 let counts = 0;
-let Attempts = 3;
+let Attempts = 25;
 let firstIndex;
 let secondIndex;
 let thirdIndex;
 let arrOfnames = [];
 let arrOfVotes = [];
 let arrOfShown = [];
-// let arraOfPrevvalue=[];
+let arraOfPrevvalue=[];
+let arrofNewvalues=[];
 //creating a const function
 function BusCatalog(name, imgsrc) {
   this.name = name;
@@ -54,15 +55,30 @@ function genrateindex() {
 //display images function
 function renderimages()
 {
+  arraOfPrevvalue=[firstIndex,secondIndex,thirdIndex];
+  //   console.log('prev values',arraOfPrevvalue);
   firstIndex = genrateindex();
   secondIndex = genrateindex();
   thirdIndex = genrateindex();
-  while (firstIndex === secondIndex || thirdIndex === secondIndex || thirdIndex === firstIndex )
+  arrofNewvalues=[firstIndex,secondIndex,thirdIndex];
+  console.log('before while newvalues',arrofNewvalues);
+  while(firstIndex===arraOfPrevvalue[0] ||firstIndex===arraOfPrevvalue[1] || firstIndex===arraOfPrevvalue[2] )
   {
-    firstIndex = genrateindex();
-    secondIndex = genrateindex();
+    firstIndex=genrateindex();
+
   }
-  console.log(BusCatalog.Images[firstIndex]);
+  while(secondIndex===arraOfPrevvalue[0] ||secondIndex===arraOfPrevvalue[1] || secondIndex===arraOfPrevvalue[2] || secondIndex === firstIndex)
+  {
+    secondIndex=genrateindex();
+
+  }
+  while(thirdIndex===arraOfPrevvalue[0] ||thirdIndex===arraOfPrevvalue[1] || thirdIndex===arraOfPrevvalue[2] || thirdIndex === secondIndex || thirdIndex === firstIndex)
+  {
+    thirdIndex=genrateindex();
+  }
+  arrofNewvalues=[firstIndex,secondIndex,thirdIndex];
+  console.log('after while new values',arrofNewvalues);
+  //   console.log(BusCatalog.Images[firstIndex]);
   firstImageElement.src = BusCatalog.Images[firstIndex].imgsrc;
   BusCatalog.Images[firstIndex].shown++;
   secondImageElement.src = BusCatalog.Images[secondIndex].imgsrc;
@@ -113,9 +129,7 @@ function generatelist() {
   for (let i = 0; i <BusCatalog.Images.length; i++)
   {
     arrOfVotes.push(BusCatalog.Images[i].votes);
-    console.log('this is votes',BusCatalog.Images[i].votes);
     arrOfShown.push(BusCatalog.Images[i].shown);
-    console.log(BusCatalog.Images[i].votes);
     console.log(arrOfVotes);
     let li = document.createElement('li');
     Rresults.appendChild(li);
@@ -138,7 +152,7 @@ function chart()
         label: 'Votes',
         data: arrOfVotes,
         backgroundColor: [
-          'rgba(150, 9, 100, 0.2)',
+          'rgba(255, 0, 0, 2)',
         ],
         borderWidth: 1
       },{
