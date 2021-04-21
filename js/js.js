@@ -6,7 +6,7 @@ let thirdImageElement = document.getElementById('third-image');
 let container = document.getElementById('first-sec');
 //initiliazation my variables
 let counts = 0;
-let Attempts = 25;
+let Attempts = 2;
 let firstIndex;
 let secondIndex;
 let thirdIndex;
@@ -120,6 +120,7 @@ function handleClicking(event)
     buttonreport.addEventListener('click', generatelist);
     container.removeEventListener('click',handleClicking);
   }
+  setArr();
 }
 
 function generatelist() {
@@ -139,6 +140,7 @@ function generatelist() {
   }
   chart();
 }
+getArr();
 function chart()
 {
   let ctx = document.getElementById('myChart');
@@ -167,3 +169,15 @@ function chart()
   });
 }
 
+function setArr(){
+  let saveLocalArr = JSON.stringify(BusCatalog.Images);
+  localStorage.setItem('Votes', saveLocalArr);
+}
+function getArr(){
+  let data = localStorage.getItem('Votes');
+  if(data !== null){
+    let votes = JSON.parse(data);
+    BusCatalog.Images =votes;}
+
+
+}
